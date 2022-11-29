@@ -198,7 +198,45 @@ Con este fichero ejecutamos el siguiente comando:
 Con ello, podremos volver a generar otra predicción que también se almacenará en la BBDD de MongoDB sin necesidad de utilizar Intellij.
 
 ## Apache Airflow(Opcional)
-Con este SW de Apache podremos entrenar el modelo aplicando 
+Con este SW de Apache podremos entrenar el modelo de otra manera. 
+The version of Apache Airflow used is the 2.1.4 and it is installed with pip. For development it uses SQLite as database but it is not recommended for production. For the laboratory SQLite is sufficient.
+Install python libraries for Apache Airflow (suggested Python 3.7)
+
+	cd resources/airflow
+	python3.7 -m pip install -r requirements.txt -c constraints.txt
+Seleccionamos la variable de entorno PROJECT_HOME cogiendo la ruta del repositorio de la práctica
+	
+	export PROJECT_HOME=/home/upm/practica_big_data_2019
+Establecemos un nuevo valor de la variable PATH:
+	
+	export PATH=$PATH:~/.local/bin
+En un terminal, configuramos el environment de airflow:
+
+	export AIRFLOW_HOME=~/airflow
+	mkdir $AIRFLOW_HOME/dags
+	mkdir $AIRFLOW_HOME/logs
+	mkdir $AIRFLOW_HOME/plugins
+
+	airflow users create \
+    	--username admin \
+    	--password admin \
+    	--firstname Jack \
+    	--lastname  Sparrow\
+    	--role Admin \
+    	--email example@mail.org
+Iniciamos la base de datos:
+
+	airflow db init
+Iniciamos en otro terminal el scheduler y el webserver de airflow:
+
+	airflow webserver --port 8080
+	airflow scheduler
+Nos conectamos a la página  http://localhost:8080/home y nos muestra la lista de DAGs accesibles
+Si pinchamos sobre la solapa de **Play->Trigger** Dag nos entrena un modelo que aparece representado en la lista de DAGs **Run**
+
+	
+	
+	
 
             
         
