@@ -231,8 +231,9 @@ Iniciamos en otro terminal el scheduler y el webserver de airflow:
 
 	airflow webserver --port 8080
 	airflow scheduler
+Añadimos y ejecutamos el DAG alojado en 	resources/airflow/setup.py
 Nos conectamos a la página  http://localhost:8080/home y nos muestra la lista de DAGs accesibles
-Si pinchamos sobre la solapa de **Play->Trigger** Dag nos entrena un modelo que aparece representado en la lista de DAGs **Run**
+Si pinchamos sobre la solapa de **Play->Trigger** Dag nos entrena un modelo que aparece representado en la lista de DAGs **Runs**. Pinchamos sobre el DAG y no muestra el histórico de predicciones que hemos realizado.
 
 	
 	
