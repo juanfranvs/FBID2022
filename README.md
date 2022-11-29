@@ -237,6 +237,25 @@ Añadimos y ejecutamos el DAG alojado en 				**resources/airflow/setup.py**
 Nos conectamos a la página  http://localhost:8080/home y nos muestra la lista de DAGs accesibles
 Si pinchamos sobre la solapa de **Play->Trigger Dag** nos entrena un modelo que aparece representado en la lista de DAGs **Runs**. Pinchamos sobre el DAG y no muestra el histórico de predicciones que hemos realizado.
 
+**TODO**: add the DAG and execute it to train the model (see the official documentation of Apache Airflow to learn how to exectue and add a DAG with the airflow command). Para poder añadir el DAG se ha necesitado ejecutar el siguiente comando desde la carpeta practica_big_data_2019:
+
+Para añadir el dag tenemos que copiar el fichero alojado en la ruta **resources/airflow/setup.py** y extraerlo fuera de la carpeta del repositorio. Para ello ejecutamos el comando:
+
+	sudo cp /resources/airflow/setup.py /home/upm/airflow/dags
+Una vez copiado el fichero que contiene el DAG nos autenticamos por el interfaz web a Apache Airflow introduciendo las credenciales user:admin y contraseña:admin accedemos a la lista de DAGs existentes en la web.
+
+**TODO**: explain the architecture of apache airflow (see the official documentation of Apache Airflow)
+Airflow trabaja con DAGs(Directed Aciclic Graph) como una metodología para estructurar los procesos por lotes que se van a ejecutar en un flujo de trabajo mediante relaciones y dependencias. Estos grafos deberán cumplir 2 condiciones:
+ - Acíclicos: No deben existir bucles por lo que la ejecución de un nodo no puede regresar a otro nodo que ya ha sido ejecutado.
+ - Dirigidos: Las relaciones de los nodos son de un único sentido.
+Dentro de la estructura que presenta Apache Airflow destacamos 
+ - Scheduler: Encargado de los flujos de trabajo planificados
+ - Executor: Pone en contacto a los componentes de la arquitectura con el worker que asigna tareas.
+ - DAG Directory: Directorio que almacena las tareas descritas por ficheros Python.
+ - Workers: Donde se almacenan las tareas.
+ - Metadata Database: Base de Datos que contiene metadatos.
+ - Webserver: Servidor que presenta la interfaz.
+
 	
 	
 	
