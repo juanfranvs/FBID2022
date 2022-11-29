@@ -264,6 +264,42 @@ Dentro de la estructura que presenta Apache Airflow destacamos
 
 Observando el fichero **setup.py** dentro del array default_args en su propiedad retries y retry_delay vemos que presentan los valores 3 y timedelta(minutes=5) que indica que el DAG se intenta iniciar hasta 3 veces teniendo una **periodicidad de task de 5 minutos entre cada intento**. Además viendo el código vemos que no está configurado para que se inicie la tarea periódicamente.
 
+# DOCKER
+A partir de ahora vamos a generar contenedores para poder desplegar todos los servicios sobre Google Cloud. Para ello realizamos el proceso siguiente:
+
+## Creamos la red
+
+	sudo docker network create mynet --driver bridge
+	sudo docker run -d  --network mynet --name mongopr_bd -v /home/josejaviermata7/practica_big_data_2019:/home/practica_big_data_2019 -p 27017:27017 mongo
+## Ejecutamos el fichero import_distances.sh
+
+	docker exec -w /home/practica_big_data_2019 mongopr_bd ./resources/import_distances.sh
+	sudo docker exec -it mongopr_bd mongosh agile_data_science
+	show collections
+## Desplegamos Zookeeper
+
+	sudo docker run -d --name zookeeper \
+ 		--network mynet\
+ 		-p 2181:2181 \
+ 		-e ALLOW_ANONYMOUS_LOGIN=yes \
+ 		 bitnami/zookeeper:latest
+## Desplegamos Kafka
+
+	sudo docker run -d --name kafka \
+ 	--network mynet\
+ 	-p 9092:9092 \
+ 	-e KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181 \
+	-e ALLOW_PLAINTEXT_LISTENER=yes \
+ 	-e KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CLIENT:PLAINTEXT \
+ 	-e KAFKA_CFG_LISTENERS=CLIENT://:9092 \
+ 	-e KAFKA_CFG_ADVERTISED_LISTENERS=CLIENT://kafka:9092 \
+ 	-e KAFKA_CFG_INTER_BROKER_LISTENER_NAME=CLIENT \
+ 	bitnami/kafka:3.0.0
+
+
+
+
+
 	
 	
 	
