@@ -101,14 +101,34 @@ Comprobamos si la máquina está activa ejecutando:
          sudo service mongod status
 Nos devuelve:
 
-            //devuelve
+     mongod.service - MongoDB Database Server
+     Loaded: loaded (/lib/systemd/system/mongod.service; enabled; vendor pr>
+     Active: active (running) since Tue 2022-11-15 16:53:03 CET; 23h ago
+     Docs: https://docs.mongodb.org/manual
+     Main PID: 18011 (mongod)
+     Memory: 50.4M
+     CGroup: /system.slice/mongod.service
+            └─18011 /usr/bin/mongod --config /etc/mongod.conf
             
 Ejecutamos el script import_distances.sh
 
           ./resources/import_distances.sh
 Nos devuelve:
 
-            //devuelve
+     2019-10-01T17:06:46.957+0200	connected to: mongodb://localhost/
+     2019-10-01T17:06:47.035+0200	4696 document(s) imported successfully. 0 document(s) failed to import.
+     MongoDB shell version v4.2.0
+     connecting to: mongodb://127.0.0.1:27017/agile_data_science?compressors=disabled&gssapiServiceName=mongodb
+     Implicit session: session { "id" : UUID("9bda4bb6-5727-4e91-8855-71db2b818232") }
+     MongoDB server version: 4.2.0
+        {
+	        "createdCollectionAutomatically" : false,
+	        "numIndexesBefore" : 1,
+	        "numIndexesAfter" : 2,
+	        "ok" : 1
+        }
+
+   
             
 ## Train and Save the model with Pyspark mllib
 Dentro del directorio de la práctica exportamos las variables de entorno:
@@ -145,6 +165,23 @@ Una vez realizamos la predicción con el interfaz web abrimos la shell de MongoD
            > use agile_data_science
            > db.flight_delay_classification_response.find()
 Esto nos devuelve como respuesta una query de Mongo que contiene los datos que se han almacenado de dicha predicción.
+
+             {
+                _id: ObjectId("6373cc430e39684b17440328"),
+                Origin: 'SFO',
+                DayOfWeek: 1,
+                DayOfYear: 359,
+                DayOfMonth: 25,
+                Dest: 'ATL',
+                DepDelay: 5,
+                Timestamp: ISODate("2022-11-15T17:28:35.113Z"),
+                FlightDate: ISODate("2018-12-24T23:00:00.000Z"),
+                Carrier: 'AA',
+                UUID: 'efab3289-49ce-4233-9c47-4983fb3acc91',
+                Distance: 2139,
+                Route: 'SFO-ATL',
+                Prediction: 2
+             }
 
 ## Ejecución con Spark-Submit
 Una vez que hemos probado con Intellij la predicción, paramos el código de MakePrediction y procedemos a generar un fichero con extensión .jar que se encargará de compilar y ejecutar el código empleando el comando **spark-submit**.
