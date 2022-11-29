@@ -261,6 +261,7 @@ Dentro de la estructura que presenta Apache Airflow destacamos
  - Webserver: Servidor que presenta la interfaz.
 
 **TODO**:  analyzing the setup.py: what happens if the task fails?, what is the peridocity of the task?
+
 Observando el fichero **setup.py** dentro del array default_args en su propiedad retries y retry_delay vemos que presentan los valores 3 y timedelta(minutes=5) que indica que el DAG se intenta iniciar hasta 3 veces teniendo una **periodicidad de task de 5 minutos entre cada intento**. Además viendo el código vemos que no está configurado para que se inicie la tarea periódicamente.
 
 	
