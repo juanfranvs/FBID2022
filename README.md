@@ -147,6 +147,7 @@ Añadimos la siguiente sentencia dentro del fichero MakePrediction.scala:
           cd /flight_prediction/src/main/scala/es/upm/dit/ging/predictor
           val base_path="/home/upm/practica_big_data_2019"
 Una vez realizado el cambio abrimos Intellij compilamos y ejecutamos el fichero MakePrediction
+
 	  cd /opt/idea-IC-222.4345.14/bin 
 	  ./idea.sh
 
