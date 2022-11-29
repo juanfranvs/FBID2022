@@ -56,3 +56,109 @@ Descargamos el paquete https://mirrors.estointernet.in/apache/spark/spark-3.1.2/
         cd /practica_big_data_2019/software 
         tar -xzf kafka_2.13-3.3.1.tgz
         
+## Downloading Data
+Nos movemos al **directorio de la práctica**
+
+        cd practica_big_data_2019
+Descargamos los datos ejecutando:
+
+        ./resources/download_data.sh
+## Install Python libraries
+
+        pip install -r requirements.txt
+## Start Zookeeper
+Arrancamos en un terminal el servidor de Zookeeper:
+
+        bin/zookeeper-server-start.sh config/zookeeper.properties
+## Start Kafka
+Arrancamos en un terminal el servidor de Kafka:
+
+        bin/kafka-server-start.sh config/server.properties
+Creamos en un nuevo terminal un **Tópico**
+
+        bin/kafka-topics.sh \
+            --create \
+            --bootstrap-server localhost:9092 \
+            --replication-factor 1 \
+            --partitions 1 \
+            --topic flight_delay_classification_request
+Nos devuelve el siguiente mensaje:
+
+         Created topic "flight_delay_classification_request".
+Una vez creado mostramos la **Lista de Tópicos**:
+
+         flight_delay_classification_request
+Opcionalmente podemos generar un **Consumidor**:
+
+         bin/kafka-console-consumer.sh \
+            --bootstrap-server localhost:9092 \
+            --topic flight_delay_classification_request \
+            --from-beginning
+## Import the distance records to MongoDB
+Comprobamos si la máquina está activa ejecutando:
+
+         sudo service mongod status
+Nos devuelve:
+
+            //devuelve
+            
+Ejecutamos el script import_distances.sh
+
+          ./resources/import_distances.sh
+Nos devuelve:
+
+            //devuelve
+            
+## Train and Save the model with Pyspark mllib
+Dentro del directorio de la práctica exportamos las variables de entorno:
+
+          export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64
+          export SPARK_HOME=/opt/spark
+Entrenamos el modelo dentro de practica_big_data_2019/resources:
+
+          python3 resources/train_spark_mllib_model.py .
+Vemos el modelo generado moviendonos al directorio models
+        
+          ls ../models
+## Run Flight Predictor
+Añadimos la siguiente sentencia dentro del fichero MakePrediction.scala:
+
+          cd /flight_prediction/src/main/scala/es/upm/dit/ging/predictor
+          val base_path="/home/upm/practica_big_data_2019"
+Una vez realizado el cambio abrimos Intellij compilamos y ejecutamos el fichero MakePrediction
+
+## Start the prediction request Web Application
+Añadimos la variable de entorno PROJECT_HOME que contendrá la ruta de la práctica:
+
+          export PROJECT_HOME="/home/upm/practica_big_data_2019
+Vamos a la ruta web del proyecto y ejecutamos el fichero predict_flask.py:
+
+          cd practica_big_data_2019/resources/web
+          python3 predict_flask.py
+Este fichero nos permitirá abrir la web predictora de vuelos que arranca la aplicación sobre el puerto 5000 de localhost: http://localhost:5000/flights/delays/predict_kafka y ejecutar el botón Submit
+
+## Check the predictions records inserted in MongoDB
+Una vez realizamos la predicción con el interfaz web abrimos la shell de MongoDB para ver que los datos realizados por la predicción son almacenados de forma correcta.
+
+           > mongosh
+           > use agile_data_science
+           > db.flight_delay_classification_response.find()
+Esto nos devuelve como respuesta una query de Mongo que contiene los datos que se han almacenado de dicha predicción.
+
+## Ejecución con Spark-Submit
+Una vez que hemos probado con Intellij la predicción, paramos el código de MakePrediction y procedemos a generar un fichero con extensión .jar que se encargará de compilar y ejecutar el código empleando el comando **spark-submit**.
+Vamos a la ruta /flight_prediction/target/scala y ejecutamos:
+
+            sbt clean
+            sbt package
+Con este fichero ejecutamos el siguiente comando:
+
+            spark-submit --class es.upm.dit.ging.predictor.MakePrediction --master local --packages org.mongodb.spark:mongo-spark-connector_2.12:3.0.0,org.apache.spark:spark-sql-kafka-0-10_2.12:3.0.1 /home/upm/practica_big_data_2019/flight_prediction/target/scala-2.12/flight_prediction_2.12-0.1.jar
+Con ello, podremos volver a generar otra predicción que también se almacenará en la BBDD de MongoDB sin necesidad de utilizar Intellij.
+
+## Apache Airflow(Opcional)
+Con este SW de Apache podremos entrenar el modelo aplicando 
+
+            
+        
+        
