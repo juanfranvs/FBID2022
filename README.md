@@ -295,6 +295,45 @@ A partir de ahora vamos a generar contenedores para poder desplegar todos los se
  	-e KAFKA_CFG_ADVERTISED_LISTENERS=CLIENT://kafka:9092 \
  	-e KAFKA_CFG_INTER_BROKER_LISTENER_NAME=CLIENT \
  	bitnami/kafka:3.0.0
+## Generamos el topic
+
+	sudo docker exec kafka kafka-topics.sh \
+ 	--create \
+ 	--bootstrap-server kafka:9092 \
+ 	--replication-factor 1 \
+ 	--partitions 1 \
+ 	--topic flight_delay_classification_request
+### Comprobamos la generación del topic
+
+	sudo docker exec kafka kafka-topics.sh --bootstrap-server kafka:9092 --list
+## Arrancamos el spark-master
+
+	sudo docker run -d --name spark-master \
+  	--network=mynet \
+  	-e SPARK_MODE=master \
+  	-p 10.204.0.2:8080:8080 \
+	bitnami/spark:3.1.2
+	
+## Arrancamos el spark-worker
+
+	sudo docker run -d --name spark-worker \
+  	--network=mynet \
+  	-e SPARK_MODE=worker \
+  	-p 10.204.0.2:8081:8081 \
+	-v /home/josejaviermata7/practica_big_data_2019:/home/practica_big_data_2019 \
+	-v /home/josejaviermata7/jars:/opt/bitnami/spark/.ivy2:z \
+	bitnami/spark:3.1.2
+	
+### Ejecutamos Spark-submit 
+	sudo docker exec spark-worker spark-submit --master spark://5725f561d1dd:7077 --deploy-mode cluster --packages org.mongodb.spark:mongo-spark-			connector_2.12:3.0.1,org.apache.spark:spark-sql-kafka-0-10_2.12:3.0.0 --class es.upm.dit.ging.predictor.MakePrediction 		
+	/home/practica_big_data_2019/flight_prediction/target/scala-2.12/flight_prediction_2.12-0.1.jar
+	
+### Lanzamos el Predict Flask
+
+	sudo docker run -p 10.204.0.2:5000:5000 flask
+
+
+
 
 
 
