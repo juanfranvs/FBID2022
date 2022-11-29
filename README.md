@@ -1,4 +1,4 @@
-# FBID2022
+# FBID2022 - Práctica sobre Predicción de Vuelos
 Proyecto Realizado para la asignatura BDFI/FBID del MUIT/MUIRST de la ETSIT-UPM en el curso 2022/2023 por Juan Francisco Vara Sánchez y Jose Javier Mata de la Fuente.
 Para el desarrollo de este proyecto tomamos como base el repositorio proporcionado: https://github.com/ging/practica_big_data_2019.
 
