@@ -245,10 +245,14 @@ Para añadir el dag tenemos que copiar el fichero alojado en la ruta **resources
 Una vez copiado el fichero que contiene el DAG nos autenticamos por el interfaz web a Apache Airflow introduciendo las credenciales user:admin y contraseña:admin accedemos a la lista de DAGs existentes en la web.
 
 **TODO**: explain the architecture of apache airflow (see the official documentation of Apache Airflow)
+
 Airflow trabaja con DAGs(Directed Aciclic Graph) como una metodología para estructurar los procesos por lotes que se van a ejecutar en un flujo de trabajo mediante relaciones y dependencias. Estos grafos deberán cumplir 2 condiciones:
+
  - Acíclicos: No deben existir bucles por lo que la ejecución de un nodo no puede regresar a otro nodo que ya ha sido ejecutado.
  - Dirigidos: Las relaciones de los nodos son de un único sentido.
+ - 
 Dentro de la estructura que presenta Apache Airflow destacamos 
+
  - Scheduler: Encargado de los flujos de trabajo planificados
  - Executor: Pone en contacto a los componentes de la arquitectura con el worker que asigna tareas.
  - DAG Directory: Directorio que almacena las tareas descritas por ficheros Python.
