@@ -49,12 +49,13 @@ Descargamos el paquete https://mirrors.estointernet.in/apache/spark/spark-3.1.2/
 
         cd /practica_big_data_2019/software
         spark-3.1.2-bin-hadoop3.2.tgz
-        tar -xzf kafka_2.13-3.3.1.tgz   
+        tar -xzf spark-3.1.2-bin-hadoop3.2.tgz   
 - **Kafka**
   Instlación de la  versón kafka_2.12-3.0.0 a través de la URL: https://kafka.apache.org/quickstart
   
         cd /practica_big_data_2019/software 
-        tar -xzf kafka_2.13-3.3.1.tgz
+        kafka_2.12-3.0.0.tgz
+        tar -xzf kafka_2.12-3.0.0.tgz
         
 ## Downloading Data
 Nos movemos al **directorio de la práctica**
