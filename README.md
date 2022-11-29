@@ -250,7 +250,7 @@ Airflow trabaja con DAGs(Directed Aciclic Graph) como una metodología para estr
 
  - Acíclicos: No deben existir bucles por lo que la ejecución de un nodo no puede regresar a otro nodo que ya ha sido ejecutado.
  - Dirigidos: Las relaciones de los nodos son de un único sentido.
- - 
+ 
 Dentro de la estructura que presenta Apache Airflow destacamos 
 
  - Scheduler: Encargado de los flujos de trabajo planificados
@@ -259,6 +259,9 @@ Dentro de la estructura que presenta Apache Airflow destacamos
  - Workers: Donde se almacenan las tareas.
  - Metadata Database: Base de Datos que contiene metadatos.
  - Webserver: Servidor que presenta la interfaz.
+
+**TODO**:  analyzing the setup.py: what happens if the task fails?, what is the peridocity of the task?
+Observando el fichero **setup.py** dentro del array default_args en su propiedad retries y retry_delay vemos que presentan los valores 3 y timedelta(minutes=5) que indica que el DAG se intenta iniciar hasta 3 veces teniendo una **periodicidad de task de 5 minutos entre cada intento**. Además viendo el código vemos que no está configurado para que se inicie la tarea periódicamente.
 
 	
 	
